@@ -1,0 +1,31 @@
+service: culqi-backend-serverless
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: us-west-2
+
+package:
+  include:
+    - node_modules/**
+    - package.json
+    - package-lock.json
+
+functions:
+  generateToken:
+    handler: dist/lambdas/generateToken.handler
+    events:
+      - http:
+          path: /generate-token
+          method: post
+          cors: true
+  
+  processCharge:
+    handler: dist/lambdas/getCreditCard.handler
+    events:
+      - http:
+          path: /credit-card
+          method: get
+          cors: true
